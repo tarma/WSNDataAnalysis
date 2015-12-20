@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"></meta>
+    <script src="d3.min.js"></script>
+    <style>
+        svg line { stroke: green; stroke-width: 2px; }
+        svg circle.selected { fill: red; }
+        svg circle.onpath { fill: yellow; }
+        svg circle#Node60001 { fill: yellow; }
+    </style>
+</head>
+<body>
+    <script>
+        var w = window.innerWidth - 20;
+        var h = window.innerHeight - 10;
+        var padding = 10;
+        var location_info = {};
+        var path_info = {};
+        var neighbor_info = {};
+        var xScale;
+        var yScale;
+        var selected_node_id = -1;
+        var svg = d3.select("body")
+                    .append("svg")
+                    .attr("width", w)
+                    .attr("height", h);
+        d3.json("location_data.json", function(error, json) {
+        if (!error) {
+            plot(json.location);
+        } else {
+            alert("Parse location_data.json error or connection error.");
+        }
+    });
+    </script>
+    <script src="select.js"></script>
+    <script src="plot.js"></script>
+    <script src="path.js"></script>
+    <script src="neighbor.js"></script>
+</body>
+</html>
