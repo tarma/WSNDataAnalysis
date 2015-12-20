@@ -23,13 +23,13 @@ function plot(location_data) {
        .attr("cy", function(d) {
         return yScale(d.y);
         })
-       .attr("r", 3)
+       .attr("r", 5)
        .attr("id", function(d) {
         return "Node" + d["node id"];
        })
        .on("click", function(d) {
         if (this.className.baseVal == "selected") {
-            unselect(d["node id"]);
+            unselect();
             this.className.baseVal = "";
         } else {
             select(d["node id"]);
@@ -45,10 +45,43 @@ function plot(location_data) {
         }
     });
     
+    d3.json("C1-60001-2011-08-04.json", function(error, json) {
+        if (!error) {
+            process_path(json.C1);
+        } else {
+            alert("Parse C1-60001-2011-08-04.json error or connection error");
+        }
+    });
+    
+    d3.json("C1-60001-2011-08-05.json", function(error, json) {
+        if (!error) {
+            process_path(json.C1);
+        } else {
+            alert("Parse C1-60001-2011-08-05.json error or connection error");
+        }
+    });
+    
     d3.json("C2-60001-2011-08-03.json", function(error, json) {
         if (!error) {
             process_neighbor(json["C2-60001-2011-08-03"]);
         } else {
+            alert("Parse C2-60001-2011-08-03.json error or connection error");
+        }
+    });
+    
+    d3.json("C2-60001-2011-08-04.json", function(error, json) {
+        if (!error) {
+            process_neighbor(json["C2-60001-2011-08-04"]);
+        } else {
+            alert("Parse C2-60001-2011-08-04.json error or connection error");
+        }
+    });
+    
+    d3.json("C2-60001-2011-08-05.json", function(error, json) {
+        if (!error) {
+            process_neighbor(json["C2-60001-2011-08-05"]);
+        } else {
+            alert("Parse C2-60001-2011-08-05.json error or connection error");
         }
     });
 }

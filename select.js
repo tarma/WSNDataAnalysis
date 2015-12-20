@@ -1,8 +1,12 @@
 function select(node_id) {
-    svg.select(".selected").attr("class", "");
+    unselect();
     selected_node_id = node_id;
 }
 
-function unselect(node_id) {
+function unselect() {
     selected_node_id = -1;
+    svg.select(".selected").attr("class", "");
+    svg.selectAll(".onpath").attr("class", "");
+    svg.selectAll(".neighbor").attr("class", "");
+    svg.selectAll("line").remove();
 }

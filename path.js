@@ -12,7 +12,11 @@ function process_path(path) {
 }
 
 function drawPath(nodeID) {
-var count = 0;
+    if (!path_info[nodeID]) {
+        return;
+    }
+
+    var count = 0;
     for (var i = 0; i < path_info[nodeID].length; i++) {
         var k = 0;
         var location_a = location_info[nodeID];
