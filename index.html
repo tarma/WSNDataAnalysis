@@ -16,7 +16,8 @@
         svg line { stroke: green; stroke-width: 2px; }
         svg circle.selected { fill: red; }
         svg circle.onpath { fill: yellow; }
-        svg circle#Node60001 { fill: yellow; }
+        svg circle#Node60001 { fill: green; }
+        svg circle.neighbor { fill: blue; }
     </style>
 </head>
 <body>
@@ -36,13 +37,13 @@
                     <input id="radio2" type="radio" name="iCheck" value="2"/><span class="lead" style="display: inline-block">Show Neighbors</span><br>  
                     <div>
                         <p>Time</p>
-                        <input id="time1" type="range" name="time1"/><span class="lead" style="display: inline-block"></span><br>  
-                        <input id="time2" type="range" name="time2"/><span class="lead" style="display: inline-block"></span><br>
+                        <input id="time1" type="range" name="time1" min="0" max="71"/><span class="lead" style="display: inline-block"></span><br>  
+                        <input id="time2" type="range" name="time2" mix="0" max="59"/><span class="lead" style="display: inline-block"></span><br>
                         </div>
-                    <button class="btn btn-primary btn-lg btn-block" style="max-width:70%" onclick = "auto">
+                    <button class="btn btn-primary btn-lg btn-block" style="max-width:70%" onclick = "auto()">
                         Auto
                     </button>
-                    <button class="btn btn-primary btn-lg btn-block" style="max-width:70%" onclick = "flush">
+                    <button class="btn btn-primary btn-lg btn-block" style="max-width:70%" onclick = "flush()">
                         Flush
                     </button>
                 </div>
@@ -66,12 +67,34 @@
                     .append("svg")
                     .attr("width", w)
                     .attr("height", h);
+        svg.append("rect")
+           .attr("x", w - 120)
+           .attr("y", h - 60)
+           .attr("width", 120)
+           .attr("height", 60)
+           .attr("fill", "white")
+           .attr("stroke", "black")
+           .attr("stroke-width", "1px");
+        svg.append("text")
+           .attr("x", w - 85)
+           .attr("y", h - 40)
+           .text("Legend")
+        svg.append("circle")
+           .attr("fill", "green")
+           .attr("cx", w - 105)
+           .attr("cy", h - 15)
+           .attr("r", 5);
+        svg.append("text")
+           .attr("x", w - 90)
+           .attr("y", h - 10)
+           .text("Sink Node");
         d3.json("location_data.json", function(error, json) {
-        if (!error) {
-            plot(json.location);
-        } else {
-            alert("Parse location_data.json error or connection error.");
-        }
+            if (!error) {
+                plot(json.location);
+            } else {
+                alert("Parse location_data.json error or connection error.");
+            }
+        });
         function auto(){
 
         }
@@ -80,10 +103,12 @@
             var showpath = d3.select("#radio1").property("checked");
             var time1 = d3.select("#time1").property("value");
             var time2 = d3.select("#time2").property("value");
-            time1 = time1 * 72/100;
-            time2 = time2 * 60/100;
+            if (showneighbor) {
+                drawNeighbor(selected_node_id, time1, time2);
+            } else {
+                drawPath(selected_node_id, time1, time2);
+            }
         }
-    });
     </script>
     <script src="js/select.js"></script>
     <script src="js/plot.js"></script>

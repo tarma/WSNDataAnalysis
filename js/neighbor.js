@@ -13,6 +13,10 @@ function process_neighbor(data) {
 }
 
 function drawNeighbor(nodeID, hour, minute) {
+    if (nodeID < 0) {
+        alert("Please select a node.");
+        return;
+    }
     if (!neighbor_info[nodeID]) {
         return;
     }

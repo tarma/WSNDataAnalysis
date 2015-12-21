@@ -16,7 +16,12 @@ function process_path(path) {
 }
 
 function drawPath(nodeID, hour, minute) {
+    if (nodeID < 0) {
+        alert("Please select a node.");
+        return;
+    }
     if (!path_info[nodeID]) {
+        alert("Sink node didn't receive any C1 packets from this node.");
         return;
     }
 
@@ -83,5 +88,40 @@ function drawPath(nodeID, hour, minute) {
        .attr("x2", xScale(location_b.x))
        .attr("y2", yScale(location_b.y));
        
-    return neighbor_info[nodeID][i].Timestamp;
+    return path_info[nodeID][i].timestamp;
+}
+
+function getEnvData(nodeID, hour, minute) {
+    if (nodeID < 0) {
+        alert("Please select a node.");
+        return;
+    }
+    if (!path_info[nodeID]) {
+        alert("Sink node didn't receive any C1 packets from this node.");
+        return;
+    }
+
+    var i;
+    var count = 0;
+    var timestamp = genTimestamp(hour, minute);
+    var date = timestamp.slice(0, 10);
+    clear();
+    
+    for (i = 0; i < path_info[nodeID].length; i++) {
+        if (path_info[nodeID][i].timestamp.slice(0, 10) != date || path_info[nodeID][i].timestamp < timestamp) {
+            continue;
+        }
+        break;
+    }
+    
+    if (i > 0) {
+        i--;
+    }
+    var tempObj = {};
+    tempObj.timestamp = path_info[nodeID][i].timestamp;
+    tempObj.temperature = path_info[nodeID][i].Temperature * 0.01 - 40;
+    var H_l = -4 + 0.0405 * path_info[nodeID][i].Humidity - 2.8e-6 * path_info[nodeID][i].Humidity * path_info[nodeID][i].Humidity;
+    tempObj.humidity = (tempObj.temperature - 25) * (0.01 + 0.00008 * path_info[nodeID][i].Humidity) + H_l;
+    tempObj.light = path_info[nodeID][i].Light * 0.085;
+    return tempObj;
 }
