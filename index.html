@@ -37,13 +37,13 @@
                         <div class="form-group">
                             <label for="time" class="col-sm-2 control-label">Time</label>
                             <div class="col-sm-4">
-                                <input id="datetime" class="form-control" type="datetime" name="datetime" value = "2011-8-3 00:00" readonly = "readonly"/><span class="lead" style="display: inline-block"></span><br>
+                                <input id="datetime" class="form-control" type="datetime" name="datetime" value = "2011-8-3 00:00" readonly = "readonly" /><span class="lead" style="display: inline-block"></span><br>
                             </div>
                         </div>
                     </form>
                     <div>
-                        <input id="time1" type="range" name="time1" min="0" max="71" value = "0" style="max-width:80%" onmouseup = "updatetime()"/><span class="lead" style="display: inline-block"></span><br>  
-                        <input id="time2" type="range" name="time2" mix="0" max="59" value = "0" style="max-width:80%" onmouseup = "updatetime()"/><span class="lead" style="display: inline-block"></span><br>
+                        <input id="time1" type="range" name="time1" min="0" max="71" value="0" style="max-width:80%" onmouseup = "updatetime()"/><span class="lead" style="display: inline-block"></span><br>  
+                        <input id="time2" type="range" name="time2" mix="0" max="59" value="0" style="max-width:80%" onmouseup = "updatetime()"/><span class="lead" style="display: inline-block"></span><br>
                     </div>
                     <input id="radio1" type="radio" checked = "checked" name="iCheck" value="1"/><span class="lead" style="display: inline-block">Show Path</span><br>  
                     <input id="radio2" type="radio" name="iCheck" value="2"/><span class="lead" style="display: inline-block">Show Neighbors</span><br> <br>
@@ -114,9 +114,9 @@
             var time1 = parseInt(d3.select("#time1").property("value"));
             var time2 = parseInt(d3.select("#time2").property("value"));
             if (showneighbor) {
-                autoDrawNeighbor(selected_node_id, time1, time2);
+                autoDrawNeighbor(time1, time2);
             } else {
-                autoDrawPath(selected_node_id, time1, time2);
+                autoDrawPath(time1, time2);
             }
         }
         function flush(){

@@ -1,3 +1,5 @@
+var neighbor_by_date = {};
+
 function process_neighbor(data) {
     for (var i = 0; i < data.length; i++) {
         if (!neighbor_info[data[i].SourceID]) {
@@ -10,6 +12,22 @@ function process_neighbor(data) {
     tempObj.NeighborTable = data[i].NeighborTable;
     neighbor_info[data[i].SourceID].push(tempObj);
     }
+}
+
+function getETX(srcID, destID, hour, minute) {
+    var i = firstNeighborIndexLarger(srcID, hour, minute);
+    if (i > 0) {
+        i--;
+    }
+    while (i >= 0) {
+        for (var k = 0; k < neighbor_info[srcID][i].NeighborTableSize; k++) {
+            if (neighbor_info[srcID][i].NeighborTable[k].ID == destID) {
+                return neighbor_info[srcID][i].NeighborTable[k].PathETX;
+            }
+        }
+        i--;
+    }
+    return 1;
 }
 
 function firstNeighborIndexLarger(nodeID, hour, minute) {
@@ -74,17 +92,46 @@ function drawNeighbor(nodeID, hour, minute) {
     return neighbor_info[nodeID][k].Timestamp;
 }
 
-function autoDrawNeighbor(nodeID, hour, minute) {
+function firstIndexLargerNeighborByDate(hour, minute, day) {
+    var i;
+    var timestamp = genTimestamp(hour, minute);
+    for (i = 0; i < neighbor_by_date[day].length; i++) {
+        if (neighbor_by_date[day][i].Timestamp < timestamp) {
+            continue;
+        }
+        break;
+    }
+    return i;
+}
+
+function autoDrawNeighbor(hour, minute) {
     clear();
-    var t_time = decTime(hour, minute, 0, 5);
-    var start = firstNeighborIndexLarger(nodeID, t_time.hour, t_time.minute);
-    t_time = incTime(hour, minute, 0, 5);
-    var end = firstNeighborIndexLarger(nodeID, t_time.hour, t_time.minute);
-    var count = 0;
     
-    for (var k = start; k <= end; k++) {
-        for (var i = 0; i < neighbor_info[nodeID][k].NeighborTableSize; i++) {
-            if (!location_info[neighbor_info[nodeID][k].NeighborTable[i].ID]) {
+    var start_time = decTime(hour, minute, 0, 1);
+    var start_day = Math.floor(start_time.hour / 24) + 3;
+    var end_time = incTime(hour, minute, 0, 1);
+    var end_day = Math.floor(end_time.hour / 24 ) + 3;
+    
+    if (start_day == end_day) {
+        var start = firstIndexLargerPathByDate(start_time.hour, start_time.minute, start_day);
+        var end = firstIndexLargerPathByDate(end_time.hour, end_time.minute, end_day);
+        drawNeighborInPeriod(start, end, start_day);
+    } else {
+        var start = firstIndexLargerPathByDate(start_time.hour, start_time.minute, start_day);
+        drawNeighborInPeriod(start, path_by_date[start_day].length, start_day);
+        var end = firstIndexLargerPathByDate(end_time.hour, end_time.minute, end_day);
+        drawNeighborInPeriod(0, end, end_day);
+    }
+}
+
+function drawNeighborInPeriod(start, end, day) {
+    for (var k = start; k < end; k++) {
+        var nodeID = neighbor_by_date[day][k].SourceID;
+        if (!location_info[nodeID]) {
+            continue;
+        }
+        for (var i = 0; i < neighbor_by_date[day][k].NeighborTableSize; i++) {
+            if (!location_info[neighbor_by_date[day][k].NeighborTable[i].ID]) {
                 continue;
             }
             svg.append("line")
@@ -92,24 +139,16 @@ function autoDrawNeighbor(nodeID, hour, minute) {
                .attr("y1", yScale(location_info[nodeID].y))
                .attr("x2", xScale(location_info[nodeID].x))
                .attr("y2", yScale(location_info[nodeID].y))
-               .attr("id", "n_" + nodeID + "_" + neighbor_info[nodeID][k].NeighborTable[i].ID)
+               .attr("id", "n_" + nodeID + "_" + neighbor_by_date[day][k].NeighborTable[i].ID)
                .attr("class", "n_" + nodeID + "_" + k)
                .transition()
                .each("end", function () {
                 svg.select("#Node" + this.id.slice(this.id.lastIndexOf("_") + 1))
                    .classed("neighbor", true);
                })
-               .each("start", function() {
-                var previous = parseInt(this.className.baseVal.slice(this.className.baseVal.lastIndexOf("_") + 1)) - 1;
-                svg.select(".n_" + nodeID + "_" + previous)
-                   .remove();
-                svg.selectAll("circle")
-                   .classed("neighbor", false);
-               })
                .duration(500)
-               .delay((k - start) * 500)
-               .attr("x2", xScale(location_info[neighbor_info[nodeID][k].NeighborTable[i].ID].x))
-               .attr("y2", yScale(location_info[neighbor_info[nodeID][k].NeighborTable[i].ID].y));
+               .attr("x2", xScale(location_info[neighbor_by_date[day][k].NeighborTable[i].ID].x))
+               .attr("y2", yScale(location_info[neighbor_by_date[day][k].NeighborTable[i].ID].y));
         }
     }
 }
