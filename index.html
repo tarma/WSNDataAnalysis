@@ -33,21 +33,34 @@
             </div>
             <div class="row-fluid">
                 <div class="col-xs-3 span3">
-                    <input id="radio1" type="radio" checked = "checked" name="iCheck" value="1"/><span class="lead" style="display: inline-block">Show Path</span><br>  
-                    <input id="radio2" type="radio" name="iCheck" value="2"/><span class="lead" style="display: inline-block">Show Neighbors</span><br>  
-                    <div>
-                        <p>Time</p>
-                        <input id="time1" type="range" name="time1" min="0" max="71"/><span class="lead" style="display: inline-block"></span><br>  
-                        <input id="time2" type="range" name="time2" mix="0" max="59"/><span class="lead" style="display: inline-block"></span><br>
+                    <form  class="form-horizontal">
+                        <div class="form-group">
+                            <label for="time" class="col-sm-2 control-label">Time</label>
+                            <div class="col-sm-4">
+                                <input id="datetime" class="form-control" type="datetime" name="datetime" value = "2011-8-3 00:00" readonly = "readonly"/><span class="lead" style="display: inline-block"></span><br>
+                            </div>
                         </div>
-                    <button class="btn btn-primary btn-lg btn-block" style="max-width:70%" onclick = "auto()">
+                    </form>
+                    <div>
+                        <input id="time1" type="range" name="time1" min="0" max="71" value = "0" style="max-width:80%" onmouseup = "updatetime()"/><span class="lead" style="display: inline-block"></span><br>  
+                        <input id="time2" type="range" name="time2" mix="0" max="59" value = "0" style="max-width:80%" onmouseup = "updatetime()"/><span class="lead" style="display: inline-block"></span><br>
+                    </div>
+                    <input id="radio1" type="radio" checked = "checked" name="iCheck" value="1"/><span class="lead" style="display: inline-block">Show Path</span><br>  
+                    <input id="radio2" type="radio" name="iCheck" value="2"/><span class="lead" style="display: inline-block">Show Neighbors</span><br> <br>
+                    
+                    <button class="btn btn-primary btn-lg btn-block" style="max-width:80%" onclick = "auto()">
                         Auto
-                    </button>
-                    <button class="btn btn-primary btn-lg btn-block" style="max-width:70%" onclick = "flush()">
+                    </button><br><br>
+                    <button class="btn btn-primary btn-lg btn-block" style="max-width:80%" onclick = "flush()">
                         Flush
-                    </button>
+                    </button><br>
+                    <div class = "jumbotron" style = "width:80%">
+                        <h1>Authors</h1>
+                        <h2>Zhansheng Fu</h2>
+                        <h2>Chunyu Qiao</h2>
+                    </div>
                 </div>
-                <div class="col-xs-9 span9" id = "maincanvas">
+                <div class="col-xs-9 span9" id = "maincanvas" style="padding:3px;background: #eee">
                     
                 </div>
             </div>
@@ -116,6 +129,17 @@
             } else {
                 drawPath(selected_node_id, time1, time2);
             }
+        }
+        function updatetime(){
+            var time1 = parseInt(d3.select("#time1").property("value"));
+            var time2 = parseInt(d3.select("#time2").property("value"));
+            var day,hour,min;
+            day = parseInt(time1 / 24,10) + 3;
+            hour = time1 % 24;
+            min = time2;
+            var time = "2011-8-"+ day.toString() +" "+ hour.toString() +":"+ min.toString();
+            var datetime = d3.select("#datetime");
+            datetime.attr("value",time);
         }
     </script>
     <script src="js/select.js"></script>
