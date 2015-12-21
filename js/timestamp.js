@@ -19,3 +19,49 @@ function twoDigiFormat(number) {
         return "" + number;
     }
 }
+
+function decTime(hour, minute, dec_hour, dec_minute) {
+    var res = {};
+    if (hour - dec_hour < 0) {
+        res.hour = 0;
+        res.minute = 0;
+        return res;
+    } else {
+        res.hour = hour - dec_hour;
+    }
+    if (minute < dec_minute) {
+        if (res.hour < 1) {
+            res.hour = 0;
+            res.minute = 0;
+        } else {
+            res.hour--;
+            res.minute = minute + 60 - dec_minute;
+        }
+    } else {
+        res.minute = minute - dec_minute;
+    }
+    return res;
+}
+
+function incTime(hour, minute, inc_hour, inc_minute) {
+    var res = {};
+    if (hour + inc_hour > 71) {
+        res.hour = 71;
+        res.minute = 59;
+        return res;
+    } else {
+        res.hour = hour + inc_hour;
+    }
+    if (minute + inc_minute >= 60) {
+        if (res.hour >= 71) {
+            res.hour = 71;
+            res.minute = 59;
+        } else {
+            res.hour++;
+            res.minute = minute + inc_minute - 60;
+        }
+    } else {
+        res.minute = minute + inc_minute;
+    }
+    return res;
+}
