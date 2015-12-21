@@ -1,8 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Data Visulization</title> 
     <meta charset="utf-8"></meta>
-    <script src="d3.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">   
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link href="square/blue.css" rel="stylesheet">
+    <script src="js/icheck.js"></script>
+    <script src="js/d3.min.js"></script>
     <style>
         svg line { stroke: green; stroke-width: 2px; }
         svg circle.selected { fill: red; }
@@ -11,9 +19,41 @@
     </style>
 </head>
 <body>
+    <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="jumbotron well">
+                        <h1>
+                            WSN Data Visulization
+                        </h1>                        
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="col-xs-3 span3">
+                    <input id="radio1" type="radio" checked = "checked" name="iCheck" value="1"/><span class="lead" style="display: inline-block">Show Path</span><br>  
+                    <input id="radio2" type="radio" name="iCheck" value="2"/><span class="lead" style="display: inline-block">Show Neighbors</span><br>  
+                    <div>
+                        <p>Time</p>
+                        <input id="time1" type="range" name="time1"/><span class="lead" style="display: inline-block"></span><br>  
+                        <input id="time2" type="range" name="time2"/><span class="lead" style="display: inline-block"></span><br>
+                        </div>
+                    <button class="btn btn-primary btn-lg btn-block" style="max-width:70%" onclick = "auto">
+                        Auto
+                    </button>
+                    <button class="btn btn-primary btn-lg btn-block" style="max-width:70%" onclick = "flush">
+                        Flush
+                    </button>
+                </div>
+                <div class="col-xs-9 span9" id = "maincanvas">
+                    
+                </div>
+            </div>
+            
+        </div>
     <script>
-        var w = window.innerWidth - 20;
-        var h = window.innerHeight - 10;
+        var w = 0.7 * (window.innerWidth - 20);
+        var h = 0.8 * (window.innerHeight - 10);
         var padding = 10;
         var location_info = {};
         var path_info = {};
@@ -21,7 +61,7 @@
         var xScale;
         var yScale;
         var selected_node_id = -1;
-        var svg = d3.select("body")
+        var svg = d3.select("#maincanvas")
                     .append("svg")
                     .attr("width", w)
                     .attr("height", h);
@@ -31,11 +71,22 @@
         } else {
             alert("Parse location_data.json error or connection error.");
         }
+        function auto(){
+
+        }
+        function flush(){
+            var showneighbor = d3.select("#radio2").property("checked");
+            var showpath = d3.select("#radio1").property("checked");
+            var time1 = d3.select("#time1").property("value");
+            var time2 = d3.select("#time2").property("value");
+            time1 = time1 * 72/100;
+            time2 = time2 * 60/100;
+        }
     });
     </script>
-    <script src="select.js"></script>
-    <script src="plot.js"></script>
-    <script src="path.js"></script>
-    <script src="neighbor.js"></script>
+    <script src="js/select.js"></script>
+    <script src="js/plot.js"></script>
+    <script src="js/path.js"></script>
+    <script src="js/neighbor.js"></script>
 </body>
 </html>
