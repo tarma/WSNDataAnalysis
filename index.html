@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Data Visulization</title> 
+    <title>Data Visualization</title> 
     <meta charset="utf-8"></meta>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">   
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,7 +26,7 @@
                 <div class="span12">
                     <div class="jumbotron well">
                         <h1>
-                            WSN Data Visulization
+                            WSN Data Visualization
                         </h1>                        
                     </div>
                 </div>
@@ -37,25 +37,25 @@
                         <div class="form-group">
                             <label for="time" class="col-sm-2 control-label">Time</label>
                             <div class="col-sm-4">
-                                <input id="datetime" class="form-control" type="datetime" name="datetime" value = "2011-8-3 00:00" readonly = "readonly" /><span class="lead" style="display: inline-block"></span><br>
+                                <input id="datetime" class="form-control" style = "width:140px"type="datetime" name="datetime" value = "2011-8-3 00:00" readonly = "readonly"/><span class="lead" style="display: inline-block"></span>
                             </div>
                         </div>
                     </form>
                     <div>
-                        <input id="time1" type="range" name="time1" min="0" max="71" value="0" style="max-width:80%" onmouseup = "updatetime()"/><span class="lead" style="display: inline-block"></span><br>  
-                        <input id="time2" type="range" name="time2" mix="0" max="59" value="0" style="max-width:80%" onmouseup = "updatetime()"/><span class="lead" style="display: inline-block"></span><br>
+                        <input id="time1" type="range" name="time1" min="0" max="71" value = "0" style="max-width:80%" onmouseup = "updatetime()"/><span class="lead" style="display: inline-block"></span><br>  
+                        <input id="time2" type="range" name="time2" mix="0" max="59" value = "0" style="max-width:80%" onmouseup = "updatetime()"/><span class="lead" style="display: inline-block"></span><br>
                     </div>
                     <input id="radio1" type="radio" checked = "checked" name="iCheck" value="1"/><span class="lead" style="display: inline-block">Show Path</span><br>  
-                    <input id="radio2" type="radio" name="iCheck" value="2"/><span class="lead" style="display: inline-block">Show Neighbors</span><br> <br>
+                    <input id="radio2" type="radio" name="iCheck" value="2"/><span class="lead" style="display: inline-block">Show Neighbors</span><br> 
                     
                     <button class="btn btn-primary btn-lg btn-block" style="max-width:80%" onclick = "auto()">
                         Auto
-                    </button><br><br>
+                    </button>
                     <button class="btn btn-primary btn-lg btn-block" style="max-width:80%" onclick = "flush()">
                         Flush
-                    </button><br>
-                    <div class = "jumbotron" style = "width:80%">
-                        <h1>Authors</h1>
+                    </button>
+                    <div  style = "width:80%;height:60%">
+                        <h1 style = "width:80%">Authors</h1>
                         <h2>Zhansheng Fu</h2>
                         <h2>Chunyu Qiao</h2>
                     </div>
@@ -114,9 +114,9 @@
             var time1 = parseInt(d3.select("#time1").property("value"));
             var time2 = parseInt(d3.select("#time2").property("value"));
             if (showneighbor) {
-                autoDrawNeighbor(time1, time2);
+                autoDrawNeighbor(selected_node_id, time1, time2);
             } else {
-                autoDrawPath(time1, time2);
+                autoDrawPath(selected_node_id, time1, time2);
             }
         }
         function flush(){
