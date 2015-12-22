@@ -134,7 +134,7 @@ function drawNeighborInPeriod(start, end, day) {
             if (!location_info[neighbor_by_date[day][k].NeighborTable[i].ID]) {
                 continue;
             }
-            svg.append("line")
+            svg.insert("line", ":first-child")
                .attr("x1", xScale(location_info[nodeID].x))
                .attr("y1", yScale(location_info[nodeID].y))
                .attr("x2", xScale(location_info[nodeID].x))

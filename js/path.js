@@ -99,16 +99,11 @@ function drawPath(nodeID, hour, minute) {
 }
 
 function getEnvData(nodeID, hour, minute) {
-    if (nodeID < 0) {
-        alert("Please select a node.");
-        return;
-    }
     if (!path_info[nodeID]) {
         return;
     }
 
     var i = firstPathIndexLarger(nodeID, hour, minute);
-    clear();
     if (i > 0) {
         i--;
     }
