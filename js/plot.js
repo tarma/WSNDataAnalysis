@@ -102,6 +102,7 @@ function plot(location_data) {
         if (!error) {
             path_by_date[3] = json.C1;
             process_path(json.C1);
+            updatetime();
         } else {
             alert("Parse C1-60001-2011-08-03.json error or connection error");
         }
