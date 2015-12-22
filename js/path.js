@@ -219,3 +219,64 @@ function drawPathInPeriod(start, end, day) {
            .attr("y2", yScale(location_b.y));
     }
 }
+
+function showTemperature(hour, minute) {
+    svg.selectAll(".onTemp")
+       .attr("fill", "black")
+       .classed("onTemp", false);
+    svg.select(".selected")
+       .attr("fill", "#FF00FF");
+    var start_time = decTime(hour, minute, 0, 5);
+    var start_day = Math.floor(start_time.hour / 24) + 3;
+    var end_time = incTime(hour, minute, 0, 5);
+    var end_day = Math.floor(end_time.hour / 24 ) + 3;
+    if (start_day == end_day) {
+        var start = firstIndexLargerPathByDate(start_time.hour, start_time.minute, start_day);
+        var end = firstIndexLargerPathByDate(end_time.hour, end_time.minute, end_day);
+        showTemperatureInPeriod(start, end, start_day);
+    } else {
+        var start = firstIndexLargerPathByDate(start_time.hour, start_time.minute, start_day);
+        showTemperatureInPeriod(start, path_by_date[start_day].length, start_day);
+        var end = firstIndexLargerPathByDate(end_time.hour, end_time.minute, end_day);
+        showTemperatureInPeriod(0, end, end_day);
+    }
+}
+
+function showTemperatureInPeriod(start, end, day) {
+    for (var i = start; i < end; i++) {
+        var temperature = path_by_date[day][i].Temperature * 0.01 - 40;
+        if (temperature < 26) {
+            svg.select("#Node" + path_by_date[day][i].SourceID)
+               .attr("fill", "#007FFF")
+               .classed("onTemp", true);
+        } else if (temperature < 27) {
+            svg.select("#Node" + path_by_date[day][i].SourceID)
+               .attr("fill", "#00ffff")
+               .classed("onTemp", true);
+        } else if (temperature < 28) {
+            svg.select("#Node" + path_by_date[day][i].SourceID)
+               .attr("fill", "#00ff7f")
+               .classed("onTemp", true);
+        } else if (temperature < 29) {
+            svg.select("#Node" + path_by_date[day][i].SourceID)
+               .attr("fill", "#00ff00")
+               .classed("onTemp", true);
+        } else if (temperature < 30) {
+            svg.select("#Node" + path_by_date[day][i].SourceID)
+               .attr("fill", "#7fff00")
+               .classed("onTemp", true);
+        } else if (temperature < 31) {
+            svg.select("#Node" + path_by_date[day][i].SourceID)
+               .attr("fill", "#ffff00")
+               .classed("onTemp", true);
+        } else if (temperature < 32) {
+            svg.select("#Node" + path_by_date[day][i].SourceID)
+               .attr("fill", "#ff7f00")
+               .classed("onTemp", true);
+        } else if (temperature < 40) {
+            svg.select("#Node" + path_by_date[day][i].SourceID)
+               .attr("fill", "#ff0000")
+               .classed("onTemp", true);
+        }
+    }
+}

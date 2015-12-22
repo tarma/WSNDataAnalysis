@@ -14,8 +14,7 @@
     <script src="js/timestamp.js"></script>
     <style>
         svg line { stroke: green; stroke-width: 2px; }
-        svg circle.selected { fill: red; }
-        svg circle.onpath { fill: yellow; }
+        svg circle.selected { fill: #FF00FF; }
         svg circle#Node60001 { fill: green; }
         svg circle.neighbor { fill: blue; }
     </style>
@@ -80,27 +79,100 @@
                     .append("svg")
                     .attr("width", w)
                     .attr("height", h);
+        var legend_height = 220;
         svg.append("rect")
            .attr("x", w - 120)
-           .attr("y", h - 60)
+           .attr("y", h - legend_height)
            .attr("width", 120)
-           .attr("height", 60)
+           .attr("height", legend_height)
            .attr("fill", "white")
            .attr("stroke", "black")
            .attr("stroke-width", "1px");
         svg.append("text")
            .attr("x", w - 85)
-           .attr("y", h - 40)
+           .attr("y", h - legend_height + 20)
            .text("Legend")
         svg.append("circle")
            .attr("fill", "green")
            .attr("cx", w - 105)
-           .attr("cy", h - 15)
+           .attr("cy", h - legend_height + 45)
            .attr("r", 5);
         svg.append("text")
            .attr("x", w - 90)
-           .attr("y", h - 10)
+           .attr("y", h - legend_height + 50)
            .text("Sink Node");
+        svg.append("circle")
+           .attr("fill", "#007FFF")
+           .attr("cx", w - 105)
+           .attr("cy", h - legend_height + 65)
+           .attr("r", 5);
+        svg.append("text")
+           .attr("x", w - 90)
+           .attr("y", h - legend_height + 70)
+           .text("<26℃");
+        svg.append("circle")
+           .attr("fill", "#00ffff")
+           .attr("cx", w - 105)
+           .attr("cy", h - legend_height + 85)
+           .attr("r", 5);
+        svg.append("text")
+           .attr("x", w - 90)
+           .attr("y", h - legend_height + 90)
+           .text("26~27℃");
+        svg.append("circle")
+           .attr("fill", "#00ff7f")
+           .attr("cx", w - 105)
+           .attr("cy", h - legend_height + 105)
+           .attr("r", 5);
+        svg.append("text")
+           .attr("x", w - 90)
+           .attr("y", h - legend_height + 110)
+           .text("27~28℃");
+        svg.append("circle")
+           .attr("fill", "#00ff00")
+           .attr("cx", w - 105)
+           .attr("cy", h - legend_height + 125)
+           .attr("r", 5);
+        svg.append("text")
+           .attr("x", w - 90)
+           .attr("y", h - legend_height + 130)
+           .text("28~29℃");
+        svg.append("circle")
+           .attr("fill", "#7fff00")
+           .attr("cx", w - 105)
+           .attr("cy", h - legend_height + 145)
+           .attr("r", 5);
+        svg.append("text")
+           .attr("x", w - 90)
+           .attr("y", h - legend_height + 150)
+           .text("29~30℃");
+        svg.append("circle")
+           .attr("fill", "#ffff00")
+           .attr("cx", w - 105)
+           .attr("cy", h - legend_height + 165)
+           .attr("r", 5);
+        svg.append("text")
+           .attr("x", w - 90)
+           .attr("y", h - legend_height + 170)
+           .text("30~31℃");
+        svg.append("circle")
+           .attr("fill", "#ff7f00")
+           .attr("cx", w - 105)
+           .attr("cy", h - legend_height + 185)
+           .attr("r", 5);
+        svg.append("text")
+           .attr("x", w - 90)
+           .attr("y", h - legend_height + 190)
+           .text("31~32℃");
+        svg.append("circle")
+           .attr("fill", "#ff0000")
+           .attr("cx", w - 105)
+           .attr("cy", h - legend_height + 205)
+           .attr("r", 5);
+        svg.append("text")
+           .attr("x", w - 90)
+           .attr("y", h - legend_height + 210)
+           .text("32~40℃");
         d3.json("location_data.json", function(error, json) {
             if (!error) {
                 plot(json.location);
@@ -140,6 +212,7 @@
             var time = "2011-8-"+ day.toString() +" "+ hour.toString() +":"+ min.toString();
             var datetime = d3.select("#datetime");
             datetime.attr("value",time);
+            showTemperature(time1, time2)
         }
     </script>
     <script src="js/select.js"></script>

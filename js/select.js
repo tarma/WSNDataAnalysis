@@ -5,7 +5,8 @@ function select(node_id) {
 
 function unselect() {
     selected_node_id = -1;
-    svg.select(".selected").attr("class", "");
+    svg.select(".selected")
+       .classed("selected", false);
     clear();
 }
 
